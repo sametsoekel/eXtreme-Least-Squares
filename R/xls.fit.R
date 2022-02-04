@@ -1,0 +1,71 @@
+xls.fit <- function(formula,
+                    data,
+                    lag_level=1,
+                    lag_column = NULL,
+                    error_weights = NULL,
+                    error_ahead_level=4){
+
+  if(base::nrow(data) < error_ahead_level){
+
+    base::stop('The number of observations must be greater than error ahead level.')
+
+  }
+
+
+  dependent_var <- base::all.vars(formula)[1]
+
+  if(base::is.null(lag_column)){
+
+    lag_column <- dependent_var
+
+  }
+
+  if(base::is.null(error_weights)){
+
+    dummy_weights <- base::seq(from = 0,to = 1,length.out = error_ahead_level + 1)
+    error_weights <- dummy_weights[-1]/base::sum(dummy_weights[-1])
+    error_weights <- rev(error_weights)
+    base::rm(dummy_weights)
+
+  }else if(base::length(error_weights) != error_ahead_level){
+
+    base::stop('Error weights should have same length with ahead level.')
+
+  }else if(base::sum(error_weights) != 1){
+
+    base::stop('The sum of the error weights must be 1.')
+
+  }
+
+  prepared_obj <- xls.prep(formula,data,dependent_var)
+
+  df <- prepared_obj$data
+
+  independent_var <- prepared_obj$independent_var
+
+  initial_solution <- base::rep(0,base::length(independent_var))
+
+  objfun_object <- xls.objfun(data = df,error_column_name = 'error_symbolic',
+                              args = 'x',error_weights = error_weights, error_ahead_level = error_ahead_level)
+
+  objfun <- objfun_object$objective
+
+  base::suppressWarnings(optimizing_parameters <- NlcOptim::solnl(X = initial_solution,objfun = objfun))
+
+  coefficients <- base::as.data.frame(optimizing_parameters$par)
+
+  base::colnames(coefficients) <- 'coef'
+
+  base::rownames(coefficients) <- independent_var
+
+  dummy_model <- stats::lm(formula,data)
+  coefficients_vec <- coefficients$coef
+  names(coefficients_vec) <- base::rownames(coefficients)
+
+  dummy_model <- stats::lm(formula = formula,data = data)
+
+  dummy_model$coefficients <- coefficients_vec
+
+  dummy_model
+
+}
