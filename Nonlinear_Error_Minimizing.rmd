@@ -1,0 +1,65 @@
+---
+title: An R Markdown document converted from "Nonlinear_Error_Minimizing.ipynb"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(NlcOptim)
+
+
+dummy_data <- head(iris,10) %>%
+dplyr::select(-Species) %>%
+mutate(intercept=1) %>% 
+relocate(intercept,.before=Petal.Width)
+
+rownames(dummy_data) <- NULL
+
+varnum <- ncol(dummy_data) - 1
+
+coefname <- LETTERS[1:varnum]
+```
+
+```{r}
+dummy_data %>% 
+mutate(error = sprintf(paste0(paste0(rep(' %s*%s ',varnum),collapse = '+'),'-',Petal.Width),coefname[1],Sepal.Length,coefname[2],Sepal.Width,coefname[3],Petal.Length,coefname[4],intercept)) %>% 
+mutate(error_sqrd = sprintf('(%s)^2',error)) %>% 
+dplyr::select(error_sqrd) %>% 
+pull %>% 
+paste0(collapse = ' + ') -> objfun_chr
+
+objfun_chr
+```
+
+```{r}
+newname <- paste0('x[',1:varnum,']')
+
+oldname <- coefname
+
+for(i in 1:length(newname)){
+    objfun_chr <- gsub(oldname[i],newname[i],objfun_chr)
+}
+```
+
+```{r}
+args <- "x"
+
+eval(parse(text = paste('objfun_real <- function(', args, ') { return(' , objfun_chr , ')}', sep='')))
+```
+
+```{r}
+lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,dummy_data)
+```
+
+```{r}
+a <- solnl(X = c(0,0,0,0),objfun = objfun_real)
+```
+
+```{r}
+a$par
+```
+
+GOT THE SAME COEFFICIENTS WITH NONLINEAR OPTIMIZATION.
+
+END OF THE DAY !
+
