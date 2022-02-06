@@ -1,19 +1,19 @@
 Package: XLS
 Imports:
 	NlcOptim
-Title: A regression approach where you can optimize parameters by weighting errors n steps ahead.
-Version: 0.0.0.9000
+Title: A Regression Approach where you can Optimize Parameters by Weighting Errors n Steps Ahead
+Version: 0.0.0.9
 Authors@R: 
     person("Samet", "Sokel", , "a_s@eskisehir.edu.tr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4429-5125"))
+Maintainer: Samet Sokel <a_s@eskisehir.edu.tr>
 Description: Given the date column as an ascending entry, future errors are included in the sum of squares of error that should be minimized based on the number of steps and weights you select. Thus, it is prevented that the variables affect each other's coefficients unrealistically.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
     rmarkdown,
     knitr
 VignetteBuilder: knitr
+BugReports: https://github.com/sametsoekel/eXtreme-Least-Squares/issues

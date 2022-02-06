@@ -5,7 +5,7 @@
 #'
 #' @param formula An object of class "formula" (or one that can be coerced to that class): a symbolic description of the model to be fitted.
 #' @param data A data.frame object.
-#' @param dependent.var A character which is the same as left hand side variable in specified formula.
+#' @param dependent_var A character which is the same as left hand side variable in specified formula.
 #' @export
 
 xls.prep <- function(formula,data,dependent_var){

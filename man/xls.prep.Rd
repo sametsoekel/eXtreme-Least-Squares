@@ -11,7 +11,7 @@ xls.prep(formula, data, dependent_var)
 
 \item{data}{A data.frame object.}
 
-\item{dependent.var}{A character which is the same as left hand side variable in specified formula.}
+\item{dependent_var}{A character which is the same as left hand side variable in specified formula.}
 }
 \description{
 Automatically used in xls.fit()

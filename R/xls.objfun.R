@@ -6,7 +6,7 @@
 #' @param data A data.frame object which is returned by xls.prep. Tip: xls.prep's `.$data` subobject returns the data.frame
 #' @param error_column_name Symbolic error column's name. It is defaultly named "error_symbolic" by xls.prep()
 #' @param error_weights A numeric vector including error weights by order.
-#' @param error_ahead_level An integer which represents how many steps further the parameters will be optimized for each data point. 
+#' @param error_ahead_level An integer which represents how many steps further the parameters will be optimized for each data point.
 #' @export
 
 xls.objfun <- function(data,error_column_name,error_weights,error_ahead_level){
@@ -15,14 +15,14 @@ xls.objfun <- function(data,error_column_name,error_weights,error_ahead_level){
 
   sample_size <- base::nrow(df)
 
-  df$ahead_error_symbolic <- base::sapply(
+  df[['ahead_error_symbolic']] <- base::sapply(
     1:sample_size,
     function(x) base::paste(df[[error_column_name]][x:min(x+error_ahead_level-1, sample_size)], collapse = " add ")
   )
 
-  df$ahead_num <- base::sapply(base::strsplit(df$ahead_error_symbolic,split = ' add '),base::length)
+  df[['ahead_num']] <- base::sapply(base::strsplit(df[['ahead_error_symbolic']],split = ' add '),base::length)
 
-  df <- base::subset(df,ahead_num == error_ahead_level)
+  df <- df[df[['ahead_num']]  == error_ahead_level,]
 
   df$ahead_error_symbolic <- base::strsplit(df$ahead_error_symbolic,' add ')
 
@@ -42,7 +42,9 @@ xls.objfun <- function(data,error_column_name,error_weights,error_ahead_level){
 
   sum_of_errors <- base::paste(df[[new_error_column]],collapse = ' + ')
 
-  base::eval(base::parse(text = base::paste('objfun <- function(x) { return(' , sum_of_errors , ')}', sep='')))
+  objfunl <- base::list()
 
-  base::list(objective = objfun)
+  base::eval(base::parse(text = base::paste('objfunl[[1]] <- function(x) { return(' , sum_of_errors , ')}', sep='')))
+
+  base::list(objective = objfunl[[1]])
 }
