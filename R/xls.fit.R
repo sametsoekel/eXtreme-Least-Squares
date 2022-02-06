@@ -54,8 +54,7 @@ xls.fit <- function(formula,
 
   initial_solution <- base::rep(0,base::length(independent_var))
 
-  objfun_object <- xls.objfun(data = df,error_column_name = 'error_symbolic',
-                              args = 'x',error_weights = error_weights, error_ahead_level = error_ahead_level)
+  objfun_object <- xls.objfun(data = df,error_column_name = 'error_symbolic',error_weights = error_weights,error_ahead_level = error_ahead_level)
 
   objfun <- objfun_object$objective
 
