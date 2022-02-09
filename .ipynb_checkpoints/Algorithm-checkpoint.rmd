@@ -1,0 +1,159 @@
+---
+title: An R Markdown document converted from "Algorithm.ipynb"
+output: html_document
+---
+
+```{r}
+xls.prep <- function(formula,data,dependent_var){
+    
+    matrix.baked <- stats::model.matrix(formula,data)
+    
+    df.baked <- base::as.data.frame(matrix.baked)
+    
+    base::rm(matrix.baked)
+    
+    varnum <- base::ncol(df.baked)
+    
+    varnames <- base::colnames(df.baked)
+    
+    coefnames <- base::paste0('x[',1:varnum,']')
+    
+    regformat <- base::paste(base::rep('%s*%s',varnum),collapse = ' + ')
+    
+    coef_var_match <- NULL
+    
+    for(i in 1:varnum){
+        coef_var_match[i] <- base::sprintf('"%s",df.baked[["%s"]]',coefnames[i],varnames[i])
+    }
+    
+    coef_var_match <- base::paste(coef_var_match,collapse = ',')
+    
+    symbolic_error_calculation <- base::sprintf('base::sprintf("%s",%s)',regformat,coef_var_match)
+    
+    base::eval(base::parse(text = base::sprintf('df.baked[["error_symbolic"]] <- %s',symbolic_error_calculation)))
+    
+    df.baked[["error_symbolic"]] <- base::sprintf('(%s - %s)^2',df.baked[["error_symbolic"]],data[[dependent_var]])
+
+    base::list(data=df.baked,independent_var=varnames)
+
+}
+```
+
+```{r}
+xls.objfun <- function(data,error_column_name,args,error_weights,error_ahead_level){
+    
+    df <- data
+    
+    sample_size <- nrow(df)
+    
+    df$ahead_error_symbolic <- base::sapply(
+      1:sample_size,
+      function(x) paste(df[[error_column_name]][x:min(x+error_ahead_level-1, sample_size)], collapse = " add ")
+    )
+    
+    df$ahead_num <- sapply(strsplit(df$ahead_error_symbolic,split = ' add '),length)
+    
+    df <- subset(df,ahead_num == error_ahead_level)
+    
+    df$ahead_error_symbolic <- strsplit(df$ahead_error_symbolic,' add ')
+    
+    new_sample_size <- nrow(df)
+    
+    df$error_weights <- rep(list(error_weights),new_sample_size)
+    
+    new_error_column <- paste0(error_column_name,'_weighted')
+    
+    df[[new_error_column]] <- mapply(
+      paste,
+      df$error_weights,
+      df$ahead_error_symbolic,
+      sep = "*",
+      collapse = " + "
+    )
+
+    sum_of_errors <- base::paste(df[[new_error_column]],collapse = ' + ')
+    
+    #sum_of_errors <- as.character(Ryacas::yac_expr(sprintf('Simplify(%s)',sum_of_errors)))
+    
+    base::eval(base::parse(text = base::paste('objfun <- function(', args, ') { return(' , sum_of_errors , ')}', sep='')))
+    
+    base::list(objective = objfun)
+}
+```
+
+```{r}
+xls.fit <- function(formula,
+                    data,
+                    lag_level=1,
+                    lag_column = NULL,
+                    error_weights = NULL,
+                    error_ahead_level=4){
+    
+    if(base::nrow(data) < error_ahead_level){
+        
+        base::stop('The number of observations must be greater than error ahead level.')
+        
+    }
+    
+    
+    dependent_var <- base::all.vars(formula)[1]
+    
+    if(base::is.null(lag_column)){
+        
+        lag_column <- dependent_var
+        
+    }
+    
+    if(base::is.null(error_weights)){
+        
+        dummy_weights <- base::seq(from = 0,to = 1,length.out = error_ahead_level + 1)
+        error_weights <- dummy_weights[-1]/base::sum(dummy_weights[-1])
+        error_weights <- rev(error_weights)
+        base::rm(dummy_weights)
+        
+    }else if(base::length(error_weights) != error_ahead_level){
+        
+        base::stop('Error weights should have same length with ahead level.')
+        
+    }else if(base::sum(error_weights) != 1){
+        
+        base::stop('The sum of the error weights must be 1.')
+        
+    }
+    
+    prepared_obj <- xls.prep(formula,data,dependent_var)
+    
+    df <- prepared_obj$data
+    
+    independent_var <- prepared_obj$independent_var
+    
+    initial_solution <- base::rep(0,base::length(independent_var))
+
+    objfun_object <- xls.objfun(data = df,error_column_name = 'error_symbolic',
+                                args = 'x',error_weights = error_weights, error_ahead_level = error_ahead_level)
+    
+    objfun <- objfun_object$objective
+
+    base::suppressWarnings(optimizing_parameters <- NlcOptim::solnl(X = initial_solution,objfun = objfun))
+    
+    coefficients <- base::as.data.frame(optimizing_parameters$par)
+    
+    base::colnames(coefficients) <- 'coef'
+    
+    base::rownames(coefficients) <- independent_var
+
+    dummy_model <- stats::lm(formula,data)
+    coefficients_vec <- coefficients$coef
+    names(coefficients_vec) <- base::rownames(coefficients)
+    
+    dummy_model <- stats::lm(formula = formula,data = data)
+    
+    dummy_model$coefficients <- coefficients_vec
+    
+    #dummy_model$call <- 'eXtreme Least Squares Model'
+    
+    dummy_model
+
+}
+```
+

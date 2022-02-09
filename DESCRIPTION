@@ -1,13 +1,16 @@
 Package: XLS
 Imports:
-	NlcOptim
-Title: A Regression Approach where you can Optimize Parameters by Weighting Errors n Steps Ahead
+	mpoly
+    rlang
+Title: A Modeling Approach That Optimizes Future Errors in Least Squares
 Version: 0.0.0.9
 Authors@R: 
-    person("Samet", "Sokel", , "a_s@eskisehir.edu.tr", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-4429-5125"))
+    c(person("Samet", "Sokel", , "a_s@eskisehir.edu.tr", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-4429-5125")),
+      person("Yavuz", "Acar", , "yavuz.acar@boun.edu.tr", role = c("aut", "cre","rev")))
+      
 Maintainer: Samet Sokel <a_s@eskisehir.edu.tr>
-Description: Given the date column as an ascending entry, future errors are included in the sum of squares of error that should be minimized based on the number of steps and weights you select. Thus, it is prevented that the variables affect each other's coefficients unrealistically.
+Description: Given the date column as an ascending entry, future errors are included in the sum of squares of error that should be minimized based on the number of steps and weights you determine. Thus, it is prevented that the variables affect each other's coefficients unrealistically.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
