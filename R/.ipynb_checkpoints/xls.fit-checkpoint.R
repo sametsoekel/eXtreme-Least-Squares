@@ -11,7 +11,6 @@
 
 xls.fit <- function(formula,
                     data,
-                    lag_level=1,
                     error_weights = NULL,
                     error_ahead_level=4){
     

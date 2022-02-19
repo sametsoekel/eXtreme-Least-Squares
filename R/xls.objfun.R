@@ -22,7 +22,7 @@ xls.objfun <- function(data,error_column_name,error_weights,error_ahead_level){
     
     df$ahead_num <- sapply(strsplit(df$ahead_error_symbolic,split = ' add '),length)
     
-    df <- subset(df,ahead_num == error_ahead_level)
+    df <- df[df[['ahead_num']] == error_ahead_level,]
     
     df$ahead_error_symbolic <- strsplit(df$ahead_error_symbolic,' add ')
     
