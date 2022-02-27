@@ -1,3 +1,13 @@
 ^XLS\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^Algorithm\.rmd$
+^[.].*$
+^.*/[.].*$
+^cosmetic$
+^Designing_Objective_Function\.rmd$
+^Nonlinear_Error_Minimizing\.rmd$
+^notebooks_ipynb$
+^notes$
+^README\.md$
+^vignettes$
