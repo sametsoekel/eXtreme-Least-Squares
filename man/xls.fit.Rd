@@ -27,6 +27,7 @@ df <- datasets::airquality
 
 ordered_df <- df[with(df,order(Month,Day)),]
 
-model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,na.omit(ordered_df),error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
+model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,na.omit(ordered_df),
+error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
 
 }
