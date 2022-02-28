@@ -8,6 +8,7 @@
 ^Designing_Objective_Function\.rmd$
 ^Nonlinear_Error_Minimizing\.rmd$
 ^notebooks_ipynb$
+^non_build_files$
 ^notes$
 ^README\.md$
 ^vignettes$
