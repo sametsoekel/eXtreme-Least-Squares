@@ -1,21 +1,35 @@
-# XLS <img src="https://raw.githubusercontent.com/sametsoekel/extreme-least-squares/master/cosmetic/logo.png?raw=true" align="right" height=190/> 
 
+# XLS
 
+<!-- badges: start -->
+[![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3.0)
+[![](https://img.shields.io/github/last-commit/sametsoekel/eXtreme-Least-Squares.svg)](https://github.com/sametsoekel/eXtreme-Least-Squares/commits/main)
+<!-- badges: end -->
 
-## Overview
-
-An R package that allows modeling with partial weighted regression to remove over effect in time series models that are heavily loaded on the lag variable and to fit the model in a healthy state.
-
+An R package that allows modeling with partial weighted regression to remove over effect in time
+series models that are heavily loaded on the lag variable and to fit the model in a healthy state. 
 
 ## Installation
 
+You can install the released version of XLS from [Github](https://github.com/sametsoekel/eXtreme-Least-Squares) with:
+
 ``` r
-# To install the latest version from Github:
-# install.packages("devtools")
 devtools::install_github("sametsoekel/eXtreme-Least-Squares")
 ```
 
-## Comparison with the classical least squares
+## Example
 
+Fit an eXtreme Least Squares Model:
 
-<img src="https://raw.githubusercontent.com/sametsoekel/extreme-least-squares/master/cosmetic/diff_lm.png?raw=true" align="center"/> 
+``` r
+library(XLS)
+
+df <- datasets::airquality
+
+ordered_df <- df[with(df,order(Month,Day)),]
+
+model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,na.omit(ordered_df),
+				 error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
+```
+
