@@ -1,10 +1,10 @@
 
-# XLS
+# XLS <img src="https://raw.githubusercontent.com/sametsoekel/eXtreme-Least-Squares/main/non_build_files/cosmetic/logo.png?raw=true" align="right" height=190/>
 
 <!-- badges: start -->
 [![](https://www.r-pkg.org/badges/version/XLS?color=green)](https://cran.r-project.org/package=XLS)
 [![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3.0)
+[![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 [![](https://img.shields.io/github/last-commit/sametsoekel/eXtreme-Least-Squares.svg)](https://github.com/sametsoekel/eXtreme-Least-Squares/commits/main)
 <!-- badges: end -->
 
