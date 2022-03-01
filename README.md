@@ -2,6 +2,7 @@
 # XLS
 
 <!-- badges: start -->
+[![](https://www.r-pkg.org/badges/version/XLS?color=green)](https://cran.r-project.org/package=XLS)
 [![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3.0)
 [![](https://img.shields.io/github/last-commit/sametsoekel/eXtreme-Least-Squares.svg)](https://github.com/sametsoekel/eXtreme-Least-Squares/commits/main)
@@ -12,7 +13,13 @@ series models that are heavily loaded on the lag variable and to fit the model i
 
 ## Installation
 
-You can install the released version of XLS from [Github](https://github.com/sametsoekel/eXtreme-Least-Squares) with:
+You can install the released version of XLS from [CRAN](https://cran.r-project.org/web/packages/XLS/index.html) with:
+
+``` r
+install.packages("XLS")
+```
+
+Or install the development version of XLS from [Github](https://github.com/sametsoekel/eXtreme-Least-Squares) with:
 
 ``` r
 devtools::install_github("sametsoekel/eXtreme-Least-Squares")
