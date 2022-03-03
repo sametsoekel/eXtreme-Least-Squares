@@ -78,7 +78,7 @@ xls.fit <- function(formula,
     
     dummy_model$coefficients <- coefficients_vec
     
-    dataname <- rlang::sym(base::deparse(base::substitute(data)))
+    dataname <- base::substitute(data)
     
     dummy_model$call <- base::call('xls.fit',formula = formula,data = dataname,error_weights = error_weights,error_ahead_level = error_ahead_level)
     

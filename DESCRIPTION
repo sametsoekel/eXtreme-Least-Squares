@@ -1,5 +1,5 @@
 Package: XLS
-Imports: mpoly, rlang
+Imports: mpoly
 Title: A Modeling Approach that Optimizes Future Errors in Least Squares
 Version: 0.1.0
 Authors@R: 
