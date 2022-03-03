@@ -15,19 +15,18 @@ xls.fit(formula, data, error_weights = NULL, error_ahead_level = 4)
 
 \item{error_ahead_level}{An integer which represents how many steps further the parameters will be optimized for each data point.}
 }
+\value{
+A \code{lm} object whose coefficients are optimized by the mentioned method.
+}
 \description{
 Almost the same interface as \code{stats::lm}.
 Just includes two parameters more, error_weights and error_ahead_level
 }
-\value{A \code{lm} object whose coefficients are optimized by the mentioned method.}
-
 \examples{
-
 df <- datasets::airquality
 
 ordered_df <- df[with(df,order(Month,Day)),]
 
 model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,na.omit(ordered_df),
 error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
-
 }

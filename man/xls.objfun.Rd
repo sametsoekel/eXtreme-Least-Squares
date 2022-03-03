@@ -15,10 +15,10 @@ xls.objfun(data, error_column_name, error_weights, error_ahead_level)
 
 \item{error_ahead_level}{An integer which represents how many steps further the parameters will be optimized for each data point.}
 }
+\value{
+A \code{function} object.
+}
 \description{
 Automatically used in \code{xls.fit()}
 No need to use if the objective function is not specifically desired to be achieved.
-}
-\value{
-A \code{function} object.
 }

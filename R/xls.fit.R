@@ -7,6 +7,16 @@
 #' @param data A "data.frame" (with no missing values) object containing the variables in the model.
 #' @param error_weights A numeric vector including error weights by order. If NULL, it is created automatically by error_ahead_level amount, decreasing at equal intervals. 
 #' @param error_ahead_level An integer which represents how many steps further the parameters will be optimized for each data point.
+#'
+#' @return A `lm` object whose coefficients are optimized by the mentioned method.
+#'
+#' @examples
+#' df <- datasets::airquality
+#' 
+#' ordered_df <- df[with(df,order(Month,Day)),]
+#'
+#' model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,na.omit(ordered_df),
+#' error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
 #' @export
 
 

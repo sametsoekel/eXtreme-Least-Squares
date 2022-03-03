@@ -13,10 +13,10 @@ xls.prep(formula, data, dependent_var)
 
 \item{dependent_var}{A character which is the same as left hand side variable in specified formula.}
 }
+\value{
+A \code{list} object which contains a \code{data.frame} object to be modeled and character vector of independent variables.
+}
 \description{
 Automatically used in \code{xls.fit()}
 No need to use if the raw data is not specifically desired to be achieved.
-}
-\value{
-A \code{list} object which contains a \code{data.frame} object to be modeled and character vector of independent variables.
 }
