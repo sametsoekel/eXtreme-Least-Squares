@@ -37,7 +37,7 @@ xls.fit <- function(formula,
         
         dummy_weights <- base::seq(from = 0,to = 1,length.out = error_ahead_level + 1)
         error_weights <- dummy_weights[-1]/base::sum(dummy_weights[-1])
-        error_weights <- rev(error_weights)
+        error_weights <- base::rev(error_weights)
         base::rm(dummy_weights)
         
     }else if(base::length(error_weights) != error_ahead_level){
@@ -75,8 +75,22 @@ xls.fit <- function(formula,
     names(coefficients_vec) <- base::rownames(coefficients)
     
     dummy_model <- stats::lm(formula = formula,data = data)
-    
+
+    # Updating Coefficien
+
     dummy_model$coefficients <- coefficients_vec
+
+    # Updating Residuals
+
+    preds <- stats::predict(dummy_model,data)
+
+    obs <- data[[dependent_var]]
+
+    residuals <- obs - pred
+
+    dummy_model$residuals <- residuals
+
+    # Updating Call
     
     dataname <- base::substitute(data)
     
