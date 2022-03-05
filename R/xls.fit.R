@@ -86,7 +86,7 @@ xls.fit <- function(formula,
 
     obs <- data[[dependent_var]]
 
-    residuals <- obs - pred
+    residuals <- obs - preds
 
     dummy_model$residuals <- residuals
 
