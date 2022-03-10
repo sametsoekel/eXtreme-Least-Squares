@@ -15,7 +15,8 @@
 #' 
 #' ordered_df <- df[with(df,order(Month,Day)),]
 #'
-#' model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,ordered_df,error_ahead_level = 4)
+#' model <- xls.fit(Ozone ~ Solar.R + Wind + Temp,ordered_df,
+#' error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
 #' @export
 
 
@@ -43,12 +44,14 @@ xls.fit <- function(formula,
         
         base::stop('Error weights should have same length with ahead level.')
         
-    }else if(base::sum(error_weights) != 1){
+    }else if(!base::isTRUE(base::all.equal(1, base::sum(error_weights), tolerance = .Machine$double.eps^0.25))){
         
         base::stop('The sum of the error weights must be 1.')
         
     }
     
+    
+
     prepared_obj <- xls.prep(formula,data,dependent_var)
     
     df <- prepared_obj$data
