@@ -19,6 +19,17 @@
 #' error_weights = c(0.4,0.3,0.2,0.1),error_ahead_level = 4)
 #' @export
 
+if(F){
+    
+    to_my_dear <- "Acik gitmez gozlerim olsem bile sevgilim
+                   Kulaklarimda cinliyor beni anlatan sozlerin
+                   Askima hic dokunma birak oylece kalsin
+                   Gercek sevgi neymis, bilmeyenler anlasin
+
+                   Son arzum nedir diye gelip de bana sorsalar
+                   Gozlerime bakip da, her seyi anlasalar"
+}
+
 
 xls.fit <- function(formula,
                     data,
